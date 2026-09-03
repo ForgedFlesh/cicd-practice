@@ -1,0 +1,19 @@
+name: My First CI Pipeline
+
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        #this action is a reusuable task which can be used inside the workflow,it makes our repo available inside the runner ubuntu
+
+      - name: Show Python version
+        run: python --version
+
+      - name: Run Python program
+        run: python app.py
