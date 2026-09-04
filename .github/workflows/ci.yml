@@ -5,7 +5,9 @@ on:
   pull_request:
 
 jobs:
-  test:
+
+
+  Python-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,4 +31,25 @@ jobs:
       - name: Run automated test
 
         run: pytest
+
+  terraform-validation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Terraform setup
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: "1.16.0"
+
+      - name: Terraform init
+        working-directory: terraform
+        run: terraform init
+
+      - name: Terraform Validate
+        working-directory: terraform
+        run: terraform validate
+
 
