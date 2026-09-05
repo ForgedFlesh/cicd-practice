@@ -120,7 +120,7 @@ jobs:
           DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
 
         run: |
-          if [-z "$DEPLOY_TOKEN"]; then
+          if [ -z "$DEPLOY_TOKEN" ]; then 
             echo "credential is missing"
             exit 1
           fi
