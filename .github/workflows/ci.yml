@@ -1,8 +1,24 @@
 name: Python CI pipeline
 
 on:
-  push:
+  
   pull_request:
+    branches:
+      - main
+
+  push:
+    branches:
+      -main
+  
+#Pull Request INTO main
+#→ workflow runs
+
+#Push TO main
+#→ workflow runs
+
+#Normal push to random feature branch
+#→ workflow does NOT run
+
 
 jobs:
 
@@ -56,6 +72,8 @@ jobs:
     needs:
       - Python-test
       - terraform-validation
+
+    if: github.event_name== 'push' && github.ref == 'refs/heads/main'
 
     runs-on: ubuntu-latest
 
