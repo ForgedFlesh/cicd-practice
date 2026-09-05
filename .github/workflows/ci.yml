@@ -52,4 +52,13 @@ jobs:
         working-directory: terraform
         run: terraform validate
 
+  deploy:
+    needs:
+      - Python-test
+      - terraform-validation
 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Simulate deployment
+        run: echo "everything passed mf"
