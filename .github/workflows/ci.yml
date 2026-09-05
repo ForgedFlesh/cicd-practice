@@ -84,6 +84,7 @@ jobs:
           mkdir deployment-package
           cp app.py deployment-package/
           cp requirements.txt deployment-package/
+          cp release_version.txt deployment-package/
 
       - name: Upload deployment artifacts
         uses: actions/upload-artifact@v4
@@ -128,8 +129,17 @@ jobs:
           echo "credential is available"
         
 
-      - name: Simulate deployment
-        run: echo "Deploying the validated artifact to production"
+      - name: Deploy application
+        run: |
+          VERSION=$(cat deployment-package/release_version.txt)
+          echo "Attempting to deploy version $VERSION"
+          if [ "$VERSION = "2.0-bad" ]; then
+            echo "Deployment of version $VERSION failed"
+            exit 1
+          fi
+
+          echo " deployment of version $VERSION succeeded"
+
 
 
 
