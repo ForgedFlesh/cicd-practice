@@ -8,7 +8,7 @@ on:
 
   push:
     branches:
-      - main
+      - main 
   
 #Pull Request INTO main
 #→ workflow runs
@@ -68,15 +68,50 @@ jobs:
         working-directory: terraform
         run: terraform validate
 
-  deploy:
+  build:
     needs:
       - Python-test
       - terraform-validation
+    
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses : actions/checkout@v6
+
+      - name: Create Deployment Package
+        run: |
+          mkdir deployment-package
+          cp app.py deployment-package/
+          cp requirements.txt deployment-package/
+
+      - name: Upload deployment artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-app
+          path: deployment-package/
+
+
+  deploy:
+    needs:
+      - build
 
     if: github.event_name== 'push' && github.ref == 'refs/heads/main'
 
     runs-on: ubuntu-latest
 
     steps:
+      - name: Download deployed artifacts
+        uses: actions/download-artifact@v5
+        with:
+          name: python-app
+          path: deployment-package/
+
+      - name: Show deployment files
+        run: ls -la deployment-package
+
       - name: Simulate deployment
-        run: echo "everything passed mf"
+        run: echo "Deploying the validated artifact"
+
+
+
