@@ -74,6 +74,7 @@ jobs:
       - terraform-validation
     
     runs-on: ubuntu-latest
+    environment: production
 
     steps:
       - name: Checkout repository
@@ -90,6 +91,14 @@ jobs:
         with:
           name: python-app
           path: deployment-package/
+
+      - name: checking variable
+        run: echo "Deplpying to ${{ vars.DEPLOY_ENV }}"
+
+      - name: checking secret
+        run: echo "trying the secret ${{ secrets.DEPLOY_TOKEN }} "
+
+
 
 
   deploy:
@@ -114,7 +123,7 @@ jobs:
 
       - name: Show deployment enviroment
         run: echo "Deplpying to ${{ vars.DEPLOY_ENV }}"
-             echo "trying the secret ${{ secrets.DEPLOY_TOKEN }} "
+             
 
       - name: Verify Secrets Exists
         env:
