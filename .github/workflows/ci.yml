@@ -133,7 +133,7 @@ jobs:
         run: |
           VERSION=$(cat deployment-package/release_version.txt)
           echo "Attempting to deploy version $VERSION"
-          if [ "$VERSION = "2.0-bad" ]; then
+          if [ "$VERSION" = "2.0-bad" ]; then
             echo "Deployment of version $VERSION failed"
             exit 1
           fi
